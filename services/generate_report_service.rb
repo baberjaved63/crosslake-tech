@@ -1,4 +1,4 @@
-class GenerateReport
+class GenerateReportService
   attr_accessor :file
 
   def initialize(file_name)
@@ -17,7 +17,9 @@ class GenerateReport
   private
 
   def read_file
-    file.readlines.map(&:chomp)
+    file_data = file.readlines.map(&:chomp)
+    file.close
+    file_data
   end
 
   def parse_file_data(file_data)
@@ -81,12 +83,9 @@ class GenerateReport
   def display_output
     @reports.each do |report|
       puts "Report #{report[:id]} Overall Score: #{report[:score]}"
-
       report[:tracks].each do |track|
         puts "Track #{track[:id]} Score: #{track[:score]}"
       end
     end
   end
 end
-
-GenerateReport.new(ARGV[0]).call
